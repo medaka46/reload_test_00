@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Data</title>
+    <script>
+        async function reloadData() {
+            try {
+                const response = await fetch('/api/data');
+                const data = await response.json();
+                const tableBody = document.querySelector('table tbody');
+                tableBody.innerHTML = '';
+                data.forEach(item => {
+                    const row = `<tr><td>${item.id}</td><td>${item.name}</td></tr>`;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Add New Data</h1>
+    <form action="/add/" method="post">
+        <input type="text" name="name" placeholder="Enter Name" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h2>Current Data in Table</h2>
+    <button onclick="reloadData()">Reload Data</button>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in tests %}
+            <tr>
+                <td>{{ test.id }}</td>
+                <td>{{ test.name }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
